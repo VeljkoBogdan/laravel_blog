@@ -1,4 +1,8 @@
-A simple blogging app project built in Laravel.
+# A simple blogging app project built in Laravel.
 
-Database: MySQL
-Authentification: Fortify
+
+## Tools used:
+
+- **Database**: MySQL
+- **Authentification**: Fortify
+- **Frontend**: Blade

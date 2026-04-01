@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    @vite(['resources/css/auth.css', 'resources/js/app.js'])
+    @vite(['resources/css/style.css', 'resources/js/app.js'])
 </head>
 <body>
 
