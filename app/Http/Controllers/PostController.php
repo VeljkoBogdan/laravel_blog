@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -15,23 +16,32 @@ class PostController extends Controller
 
     public function create()
     {
-        return view('posts.create');
+        $tags = Tag::all();
+        return view('posts.create', compact('tags'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'body' => 'required|string'
+            'body' => 'required|string',
+            'tags' => 'array',
+            'tags.*' => 'exists:tags,id'
         ]);
 
-        $request->user()->posts()->create($validated);
+        $post = $request->user()->posts()->create([
+            'title' => $validated['title'],
+            'body' => $validated['body'],
+        ]);
+
+        $post->tags()->attach($validated['tags'] ?? []);
 
         return redirect()->route('posts.index')->with('status', 'Post Created Successfully!');
     }
 
     public function show(Post $post)
     {
+        $post->load(['user', 'tags']);
         return view('post.view', compact('post'));
     }
 
@@ -48,10 +58,16 @@ class PostController extends Controller
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'body' => 'required|string'
+            'body' => 'required|string',
+            'tags' => 'array',
+            'tags.*' => 'exists:tags,id'
         ]);
 
-        $post->update($validated);
+        $post->tags()->sync($validated['tags'] ?? []);
+        $post->update([
+            'title' => $validated['title'],
+            'body' => $validated['body'],
+        ]);
 
         return redirect()->route('posts.show', $post)
             ->with('status', 'Post Edited Successfully!');
