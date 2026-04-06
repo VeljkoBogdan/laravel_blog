@@ -117,7 +117,15 @@
             @if($post->updated_at->ne($post->created_at))
                 <span>Edited {{ $post->updated_at->diffForHumans() }}</span>
             @endif
-        </div>
+        </div> <br>
+
+        @if($post->tags->isNotEmpty())
+            <div class="tags-grid">
+                @foreach($post->tags as $tag)
+                    <span class="tag-badge">{{ $tag->name }}</span>
+                @endforeach
+            </div>
+        @endif
     </div>
 
     <div class="post-body">{{ $post->body }}</div>

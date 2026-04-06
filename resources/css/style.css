@@ -197,3 +197,60 @@ input[type="password"]:focus {
     background: var(--border);
     margin: 1.5rem 0;
 }
+
+/* --- Tags --- */
+.tags-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+}
+
+.tag-option {
+    position: relative;
+}
+
+.tag-option input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.tag-option label {
+    display: inline-block;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+    cursor: pointer;
+    transition: border-color var(--transition), color var(--transition), background var(--transition);
+}
+
+.tag-option input[type="checkbox"]:checked + label {
+    border-color: var(--accent);
+    color: var(--accent-hover);
+    background: rgba(124, 106, 255, 0.1);
+}
+
+.tag-option label:hover {
+    border-color: var(--accent);
+    color: var(--text);
+}
+
+.tag-badge {
+    display: inline-block;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    background: rgba(124, 106, 255, 0.1);
+    color: var(--accent-hover);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+

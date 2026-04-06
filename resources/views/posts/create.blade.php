@@ -130,6 +130,23 @@
                 >{{ old('body') }}</textarea>
             </div>
 
+            <div class="form-group">
+                <label>Tags</label>
+                <div class="tags-grid">
+                    @foreach($tags as $tag)
+                        <div class="tag-option">
+                            <input
+                                type="checkbox"
+                                id="tag_{{ $tag->id }}"
+                                name="tags[]"
+                                value="{{ $tag->id }}"
+                            >
+                            <label for="tag_{{ $tag->id }}">{{ $tag->name }}</label>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
             <div class="form-actions">
                 <button type="submit" class="btn">Publish post</button>
                 <a href="{{ route('posts.index') }}" class="btn-cancel">Cancel</a>

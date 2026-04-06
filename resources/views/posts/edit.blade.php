@@ -129,6 +129,24 @@
                 >{{ old('body', $post->body) }}</textarea>
             </div>
 
+            <div class="form-group">
+                <label>Tags</label>
+                <div class="tags-grid">
+                    @foreach($tags as $tag)
+                        <div class="tag-option">
+                            <input
+                                type="checkbox"
+                                id="tag_{{ $tag->id }}"
+                                name="tags[]"
+                                value="{{ $tag->id }}"
+                                {{ in_array($tag->id, old('tags', $post->tags->pluck('id')->toArray())) ? 'checked' : '' }}
+                            >
+                            <label for="tag_{{ $tag->id }}">{{ $tag->name }}</label>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
             <div class="form-actions">
                 <button type="submit" class="btn">Save changes</button>
                 <a href="{{ route('posts.show', $post) }}" class="btn-cancel">Cancel</a>
