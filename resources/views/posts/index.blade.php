@@ -196,6 +196,60 @@
         }
 
         .nav-bar form button:hover { color: var(--text); }
+
+        .search-form {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1.75rem;
+            flex-wrap: wrap;
+        }
+
+        .search-form input[type="text"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 0.55rem 0.9rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+
+        .search-form input[type="text"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(124, 106, 255, 0.15);
+        }
+
+        .search-form select {
+            padding: 0.55rem 0.9rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.875rem;
+            outline: none;
+            cursor: pointer;
+            transition: border-color var(--transition);
+        }
+
+        .search-form select:focus {
+            border-color: var(--accent);
+        }
+
+        .btn-cancel {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color var(--transition);
+            white-space: nowrap;
+        }
+
+        .btn-cancel:hover { color: var(--text); }
     </style>
 </head>
 <body>
@@ -221,6 +275,35 @@
         </div>
         <a href="{{ route('posts.create') }}" class="btn-small">+ New Post</a>
     </div>
+
+    <form method="get" action="{{ route('posts.index') }}" class="search-form">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search posts..."
+            value="{{ request('search') }}"
+            >
+
+        <select name="tag">
+            <option value="">All Tags</option>
+            @foreach($tags as $tag)
+                <option
+                    value="{{ $tag->id }}"
+                    {{ request('tag') == $tag->id ? 'selected' : '' }}
+                >
+                    {{ $tag->name }}
+                </option>
+            @endforeach
+        </select>
+
+        <button type="submit" class="btn-small">Search</button>
+
+        @if(request('search') || request('tag'))
+            <a href="{{ route('posts.index') }}" class="btn-cancel">Clear</a>
+        @endif
+
+    </form>
 
     @if($posts->isEmpty())
         <div class="empty-state">

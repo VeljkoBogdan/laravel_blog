@@ -8,10 +8,25 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::with('user')->latest()->paginate(10);
-        return view('posts.index', compact('posts'));
+        $tags = Tag::all();
+
+        $posts = Post::with(['user', 'tags'])
+            ->latest()
+            ->when($request->search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                        ->orWhere('body', 'like', "%{$search}%");
+                });
+            })
+            ->when($request->tag, function($query, $tag) {
+                $query->whereHas('tags', fn($q) => $q->where('tags.id', $tag));
+            })
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('posts.index', compact('posts', 'tags'));
     }
 
     public function create()
