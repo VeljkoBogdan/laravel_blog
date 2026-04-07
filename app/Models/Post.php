@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-#[Fillable(['title', 'body', 'user_id'])]
+#[Fillable(['title', 'body', 'user_id', 'cover_image'])]
 class Post extends Model
 {
     /** @use HasFactory<PostFactory> */

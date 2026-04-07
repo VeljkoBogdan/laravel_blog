@@ -106,7 +106,7 @@
             </ul>
         @endif
 
-        <form method="POST" action="{{ route('posts.update', $post) }}">
+        <form method="POST" action="{{ route('posts.update', $post) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -145,6 +145,11 @@
                         </div>
                     @endforeach
                 </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cover_image">Cover Image</label>
+                <input type="file" id="cover_image" name="cover_image" accept="image/*">
             </div>
 
             <div class="form-actions">

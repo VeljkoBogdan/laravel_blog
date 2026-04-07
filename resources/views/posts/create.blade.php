@@ -106,7 +106,7 @@
             </ul>
         @endif
 
-        <form method="POST" action="{{ route('posts.store') }}">
+        <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
             @csrf
 
             <div class="form-group">
@@ -145,6 +145,11 @@
                         </div>
                     @endforeach
                 </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cover_image">Cover Image</label>
+                <input type="file" id="cover_image" name="cover_image" accept="image/*">
             </div>
 
             <div class="form-actions">

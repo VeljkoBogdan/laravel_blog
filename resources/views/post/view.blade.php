@@ -32,6 +32,14 @@
             border-bottom: 1px solid var(--border);
         }
 
+        .post-img {
+            width: 256px;
+            height: 256px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            margin-top: 1.5rem;
+        }
+
         .post-header h1 {
             font-size: 2rem;
             font-weight: 600;
@@ -117,6 +125,7 @@
             @if($post->updated_at->ne($post->created_at))
                 <span>Edited {{ $post->updated_at->diffForHumans() }}</span>
             @endif
+
         </div> <br>
 
         @if($post->tags->isNotEmpty())
@@ -125,6 +134,13 @@
                     <span class="tag-badge">{{ $tag->name }}</span>
                 @endforeach
             </div>
+        @endif
+
+        @if($post->cover_image)
+            <img src="{{ Storage::url($post->cover_image) }}"
+                 alt="{{ $post->title }}"
+                 class="post-img"
+            >
         @endif
     </div>
 

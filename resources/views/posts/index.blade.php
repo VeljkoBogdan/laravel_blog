@@ -56,16 +56,31 @@
             transition: border-color var(--transition);
             text-decoration: none;
             color: inherit;
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
         }
 
         .post-card:hover { border-color: var(--accent); }
+
+        .post-card-img {
+            width: 96px;
+            height: 96px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+            flex-shrink: 0;
+        }
 
         .post-card-title {
             font-size: 1.05rem;
             font-weight: 600;
             margin-bottom: 0.4rem;
             letter-spacing: -0.01em;
+        }
+
+        .post-card-content {
+            flex: 1;
+            min-width: 0;
         }
 
         .post-card-excerpt {
@@ -313,11 +328,19 @@
         <div class="post-list">
             @foreach($posts as $post)
                 <a href="{{ route('posts.show', $post) }}" class="post-card">
-                    <div class="post-card-title">{{ $post->title }}</div>
-                    <div class="post-card-excerpt">{{ $post->body }}</div>
-                    <div class="post-card-meta">
-                        <span>{{ $post->user->name }}</span>
-                        <span>{{ $post->created_at->diffForHumans() }}</span>
+                    @if($post->cover_image)
+                        <img src="{{ Storage::url($post->cover_image) }}"
+                             alt="{{ $post->title }}"
+                             class="post-card-img"
+                        >
+                    @endif
+                    <div class="post-card-content">
+                        <div class="post-card-title">{{ $post->title }}</div>
+                        <div class="post-card-excerpt">{{ $post->body }}</div>
+                        <div class="post-card-meta">
+                            <span>{{ $post->user->name }}</span>
+                            <span>{{ $post->created_at->diffForHumans() }}</span>
+                        </div>
                     </div>
                 </a>
             @endforeach
