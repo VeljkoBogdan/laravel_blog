@@ -340,6 +340,9 @@
                         <div class="post-card-meta">
                             <span>{{ $post->user->name }}</span>
                             <span>{{ $post->created_at->diffForHumans() }}</span>
+                            @if($post->comments->isNotEmpty())
+                                <span>{{ $post->comments->count() }} comments</span>
+                            @endif
                         </div>
                     </div>
                 </a>

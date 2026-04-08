@@ -8,9 +8,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Post>
+ * @extends Factory<Comment>
  */
-class PostFactory extends Factory
+class CommentFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -21,8 +21,8 @@ class PostFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'title' => fake()->sentence(),
-            'body' => fake()->paragraphs(3, true),
+            'post_id' => Post::factory(),
+            'body' => fake()->paragraphs(1, true),
         ];
     }
 }

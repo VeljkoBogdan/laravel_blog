@@ -105,6 +105,101 @@
         }
 
         .btn-danger:hover { background: rgba(255, 95, 95, 0.2); }
+
+        /* Comments section */
+        .post-comments {
+            padding-top: 1.25rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.25rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .comments-header {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+        }
+
+        .comment {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            padding: 1rem 1.25rem;
+            background: var(--surface-2);
+            border-radius: var(--radius);
+            margin-bottom: 0.75rem;
+        }
+
+        .comment-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .comment-author {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent-hover);
+        }
+
+        .comment-body {
+            font-size: 0.9rem;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .no-comments {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+        }
+
+        /* Comment form */
+        .comment-form {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem 1.5rem;
+            margin-top: 1.25rem;
+        }
+
+        .comment-form-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .comment-form textarea {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.9rem;
+            padding: 0.7rem 0.9rem;
+            width: 100%;
+            resize: vertical;
+            min-height: 100px;
+            line-height: 1.6;
+            transition: border-color var(--transition), box-shadow var(--transition);
+            outline: none;
+        }
+
+        .comment-form textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(124, 106, 255, 0.15);
+        }
+
+        .comment-form .btn {
+            width: auto;
+            padding: 0.6rem 1.5rem;
+            margin-top: 0.75rem;
+            font-size: 0.875rem;
+        }
     </style>
 </head>
 <body>
@@ -125,7 +220,6 @@
             @if($post->updated_at->ne($post->created_at))
                 <span>Edited {{ $post->updated_at->diffForHumans() }}</span>
             @endif
-
         </div> <br>
 
         @if($post->tags->isNotEmpty())
@@ -163,6 +257,49 @@
             </form>
         </div>
     @endif
+
+    <div class="post-comments">
+
+        <p class="comments-header">
+            {{ $post->comments->count() }} {{ Str::plural('comment', $post->comments->count()) }}
+        </p>
+
+        @if($post->comments->isNotEmpty())
+            @foreach($post->comments as $comment)
+                <div class="comment">
+                    <div class="comment-meta">
+                        <span class="comment-author">{{ $comment->user->name }}</span>
+                        <span>{{ $comment->created_at->format('F j, Y') }}</span>
+                    </div>
+                    <p class="comment-body">{{ $comment->body }}</p>
+                </div>
+            @endforeach
+        @else
+            <p class="no-comments">No comments yet. Be the first!</p>
+        @endif
+
+        <div class="comment-form">
+            <p class="comment-form-title">Leave a comment</p>
+
+            @if($errors->has('body'))
+                <ul class="error-list" style="margin-bottom: 1rem;">
+                    <li>{{ $errors->first('body') }}</li>
+                </ul>
+            @endif
+
+            <form method="POST" action="{{ route('comments.store', $post) }}">
+                @csrf
+                <div class="form-group" style="margin-bottom: 0;">
+                    <textarea
+                        name="body"
+                        placeholder="Write a comment..."
+                    >{{ old('body') }}</textarea>
+                </div>
+                <button type="submit" class="btn">Post comment</button>
+            </form>
+        </div>
+
+    </div>
 
 </div>
 

@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Comment;
+use App\Models\Post;
 use App\Models\User;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -27,5 +29,14 @@ class DatabaseSeeder extends Seeder
             PostSeeder::class,
             TagSeeder::class,
         ]);
+
+        $posts = Post::all();
+        $users = User::all();
+        $posts->each(function (Post $post) use ($users) {
+            Comment::factory(rand(0,5))->create([
+                'post_id' => $post->id,
+                'user_id' => $users->random()->id,
+            ]);
+        });
     }
 }
